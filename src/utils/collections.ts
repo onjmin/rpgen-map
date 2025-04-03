@@ -12,11 +12,11 @@ export class LargeMap<K, V> implements Map<K, V> {
   }
 
   forEach(
-    callbackfn: (value: V, key: K, map: this) => void,
+    callbackfn: (value: V, key: K, map: Map<K, V>) => void,
     thisArg?: unknown,
   ): void {
-    for (const [key, value] of this) {
-      callbackfn.call(thisArg, value, key, this);
+    for (const map of this.#maps) {
+      map.forEach(callbackfn, thisArg); // 各 map に対して forEach を実行
     }
   }
 
@@ -38,25 +38,25 @@ export class LargeMap<K, V> implements Map<K, V> {
     return this;
   }
 
-  *entries(): IterableIterator<[K, V]> {
+  *entries(): MapIterator<[K, V]> {
     for (const map of this.#maps) {
       yield* map;
     }
   }
 
-  *keys(): IterableIterator<K> {
+  *keys(): MapIterator<K> {
     for (const [key] of this.entries()) {
       yield key;
     }
   }
 
-  *values(): IterableIterator<V> {
+  *values(): MapIterator<V> {
     for (const [, value] of this.entries()) {
       yield value;
     }
   }
 
-  [Symbol.iterator](): IterableIterator<[K, V]> {
+  [Symbol.iterator](): MapIterator<[K, V]> {
     return this.entries();
   }
 
