@@ -38,7 +38,7 @@
     "url": "git+https://github.com/rpgja/rpgen-map.git"
   },
   "scripts": {
-    "build": "run-s lint test clean tsc tsc-alias",
+    "build": "run-s lint clean tsc tsc-alias",
     "clean": "rimraf dist",
     "lint": "biome lint src",
     "prepare": "pnpm run build",
